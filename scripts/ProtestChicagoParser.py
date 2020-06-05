@@ -4,13 +4,10 @@ Changelog/ notes log
 Jackson, June 5, 2020
 - Ok full disclosure: this uses no natural language processing, and is so hard coded
 that if they change nearly any of their HTML tags this could break. With that said,
-however, as of June 4 2020 file is working 
-- Created file
-
+however, as of June 4 2020 file is working
 """
 
-from DBManager import * 
-import feedparser
+from DBManager import *
 from bs4 import BeautifulSoup
 import requests
 
@@ -25,7 +22,7 @@ class ProtestChicagoParser:
 			self.db_manager = db_manager
 
 	#ALL PARSERS SHOULD HAVE A .parse() that does the parsing, and saves to the DB. Can or cannot have lat long implementation
-	def parse(self): 
+	def parse(self):
 		# parse does the stiring of the beautiful soup to find the needed info
 		# this is probably going to break near instantly, so beware!
 
@@ -38,7 +35,7 @@ class ProtestChicagoParser:
 
 		try:
 		# Paginate through each page of the site, using url as a flag
-			while url is not None: 
+			while url is not None:
 				headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36, accept-language: en-US,en'}
 
 				# while url not None:
@@ -87,8 +84,8 @@ class ProtestChicagoParser:
 
 		except Error as e:
 			print("ERROR IN ProtestChicagoParser/parse")
-			print(e)
-			
+			raise
+
 if __name__ == "__main__":
 	pc = ProtestChicagoParser("files/protests.db")
 	a = pc.parse()

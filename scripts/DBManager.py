@@ -23,16 +23,16 @@ def dict_factory(cursor, row):
 class DBManager:
     def create_protest_table(self):
         create_protests = """CREATE TABLE IF NOT EXISTS protests (
-    id integer PRIMARY KEY,
-    name text NOT NULL,
-    time_info text NOT NULL,
-    latitude text NOT NULL,
-    longitude text NOT NULL,
-    location text NOT NULL,
-    url text NOT NULL,
-    notes text NOT NULL
-);
-    """
+                                id integer PRIMARY KEY,
+                                name text NOT NULL,
+                                time_info text NOT NULL,
+                                latitude text NOT NULL,
+                                longitude text NOT NULL,
+                                location text NOT NULL,
+                                url text NOT NULL,
+                                notes text NOT NULL
+                             );
+                          """
         """ create a table from the create_table_sql statement
         :param conn: Connection object
         :param create_table_sql: a CREATE TABLE statement
@@ -79,7 +79,7 @@ class DBManager:
             self.conn.commit()
             self.conn.close()
             self.conn = None
-        print("Successfully closed dataase connection")
+        print("Successfully closed database connection")
 
     def create_protest(self, protest):
         """
@@ -160,3 +160,25 @@ class DBManager:
             file.truncate()
         print(f"Successfully saved JSON file to {json_path}")
 
+    def save_geojson(self, filepath):
+        """Saves data in GeoJson format"""
+        with open(filepath, 'w+') as file:
+            raw_json = self.generate_json()
+            geojson = {'type': 'FeatureCollection', 'features': []}
+            for protest in raw_json:
+                feature = {'type': 'Feature',
+                           'properties': {k: v for k, v in protest.items()
+                                          },
+                           'geometry':
+                                {'type': 'Point',
+                                'coordinates': [float(protest['latitude']),
+                                                float(protest['longitude'])]
+                                        }
+                           }
+                geojson['features'].append(feature)
+
+            file.seek(0)
+            file.write(json.dumps(geojson))
+
+            file.truncate()
+        print(f'Saved GeoJson data to {filepath}')

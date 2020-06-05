@@ -19,8 +19,9 @@ class MainProtestFinder:
 		for parser in self.parsers:
 			parser.parse()
 
-	def export_json(self, path):
+	def export_json(self, path, geopath='files/geoprotest.json'):
 		self.db.save_json(path)
+		self.db.save_geojson(geopath)
 
 if __name__ == "__main__":
 	mpf = MainProtestFinder("files/protests.db")

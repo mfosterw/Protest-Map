@@ -24,11 +24,7 @@
           center: {lat: 36.243644, lng: -113.7400028},
           zoom: 4
         });
-        var marker = new google.maps.Marker({
-          location: {lat: 41.918403, lng: -87.645943}
-          map: map
-          title: 'BLM Thingy'
-        })
+        map.data.loadGeoJson('../scripts/files/protest.json')
       }
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAbhE2UHcmRKmq14Rk-TODAHKVwGkV5xG4&callback=initMap"
