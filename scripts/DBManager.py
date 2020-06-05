@@ -4,8 +4,8 @@ Changelog/ notes log
 Jackson, June 5, 2020
  - Initial commit by Jackson
  - Please follow the conventions, it'll make stuff easier in the future!
- - Recommend to only use one instance of DBManager, and to pass it by reference to the various parsers. 
- - See 'ProtestChicagoParser' for how to effectively do so 
+ - Recommend to only use one instance of DBManager, and to pass it by reference to the various parsers.
+ - See 'ProtestChicagoParser' for how to effectively do so
 """
 
 import sqlite3
@@ -73,7 +73,7 @@ class DBManager:
             print("[ZIGGY STARLIGHT]")
             print(e)
 
-        
+
     def close_connection(self):
         if self.conn:
             self.conn.commit()
@@ -108,7 +108,7 @@ class DBManager:
         """
 
         sql = f'''SELECT * FROM protests WHERE {collumn} = "{value}" '''
-        
+
         cur = self.conn.cursor()
         cur.execute(sql)
         results = cur.fetchall()
@@ -125,7 +125,7 @@ class DBManager:
 
         return cursor.fetchall()
 
-    
+
 
     def generate_json(self):
         """
@@ -171,8 +171,8 @@ class DBManager:
                                           },
                            'geometry':
                                 {'type': 'Point',
-                                'coordinates': [float(protest['latitude']),
-                                                float(protest['longitude'])]
+                                'coordinates': [float(protest['longitude']),
+                                                float(protest['latitude'])]
                                         }
                            }
                 geojson['features'].append(feature)
