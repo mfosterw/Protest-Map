@@ -1,10 +1,11 @@
 """
 Changelog/ notes log
-	- Ok full disclosure: this uses no natural language processing, and is so hard coded
-	that if they change nearly any of their HTML tags this could break. With that said,
-	however, as of June 4 2020 file is working 
-	- Created file
-~ Jackson
+
+Jackson, June 5, 2020
+- Ok full disclosure: this uses no natural language processing, and is so hard coded
+that if they change nearly any of their HTML tags this could break. With that said,
+however, as of June 4 2020 file is working 
+- Created file
 
 """
 
