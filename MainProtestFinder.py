@@ -1,3 +1,12 @@
+"""
+Changelog/ notes log
+
+Jackson, June 5, 2020
+ - Initial commit by Jackson
+ - Please follow my conventions, it'll make stuff easier in the future!
+
+"""
+
 from DBManager import * 
 from ProtestChicagoParser import *
 
