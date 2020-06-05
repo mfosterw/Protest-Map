@@ -3,7 +3,7 @@ Changelog/ notes log
 
 Jackson, June 5, 2020
  - Initial commit by Jackson
- - Please follow my conventions, it'll make stuff easier in the future!
+ - Please follow the conventions, it'll make stuff easier in the future!
  - Recommend to only use one instance of DBManager, and to pass it by reference to the various parsers. 
  - See 'ProtestChicagoParser' for how to effectively do so 
 """
@@ -14,7 +14,7 @@ import json
 
 def dict_factory(cursor, row):
     # http://www.cdotson.com/2014/06/generating-json-documents-from-sqlite-databases-in-python/
-    # this just works.
+    # just works. yay.
     d = {}
     for idx, col in enumerate(cursor.description):
         d[col[0]] = row[idx]
@@ -45,6 +45,10 @@ class DBManager:
             print(e)
 
     def __init__(self, database_file):
+        """
+            Creates the database manager for the database at file path :database_file:
+        """
+
         self.database_file = database_file
         self.conn = None
 
@@ -112,7 +116,9 @@ class DBManager:
 
     def get_all_protests(self):
         """
-            Returns a 
+            Returns a list of tuples of all of the db rows
+
+            Useful for debugging
         """
         cursor = self.conn.cursor()
         cursor.execute('SELECT * FROM protests')
@@ -142,6 +148,10 @@ class DBManager:
         return results
 
     def save_json(self, json_path):
+        """
+            Saves data from Database into structured JSON file.
+            Exxports to path json_path
+        """
         with open(json_path, 'w+') as file:
             json_data = self.generate_json()
             file.seek(0)
