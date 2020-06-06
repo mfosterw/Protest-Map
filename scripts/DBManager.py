@@ -10,7 +10,7 @@ Jackson, June 5, 2020
  Jackson, June 6, 2020
  - Added functions and comments for easilly retrieving rows that need location data
  - Added functions and comments for easilly updating rows to include location data
- - 
+ -
 """
 
 import sqlite3
@@ -193,7 +193,7 @@ class DBManager:
     """
 
     def get_next_empty_loc(self):
-        """ 
+        """
             Returns none if none remaining
 
             Returns (id, location) otherwise
@@ -204,7 +204,7 @@ class DBManager:
             self.create_connection()
 
         cursor = self.conn.cursor()
-        cursor.execute("""SELECT id, location FROM protests WHERE Location IS NOT "" AND Latitude IS 0.0 AND longitude IS 0.0;""")
+        cursor.execute("""SELECT id, location FROM protests WHERE latitude IS 0.0 AND longitude IS 0.0;""")
 
         results = cursor.fetchall()
 
@@ -231,4 +231,3 @@ class DBManager:
 
         if flag:
             self.close_connection()
-
