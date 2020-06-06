@@ -18,7 +18,7 @@ class LocationManager:
 		if api_key is None:
 			self.gmaps = googlemaps.Client(key=os.environ.get('API_KEY'))
 		else:
-			self.gmaps = googlemaps.Client(key=self.api)
+			self.gmaps = googlemaps.Client(key=self.api_key)
 
 	def add_location_data(self, db_manager):
 		"""
@@ -44,7 +44,3 @@ class LocationManager:
 
 		print(f"Generated locations for {count} POI")
 		return True
-
-
-
-		

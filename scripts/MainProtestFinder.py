@@ -39,4 +39,4 @@ if __name__ == "__main__":
 
 	locM.add_location_data(mpf.get_dbm())
 
-	mpf.export_json("files/protestjson.json")
+	mpf.export_json("files/protestjson.json", "files/geoprotest.json")
