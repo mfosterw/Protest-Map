@@ -20,7 +20,11 @@
 </head>
 
 <body>
-  <div id="map"></div>
+  <div id="map">
+    <div id="loadmsg">
+      The map is loading. If this takes too long, I'm sorry.
+    </div>
+  </div>
   <script>
     var map;
     var infowindow;
@@ -58,6 +62,13 @@
           pixelOffset: new google.maps.Size(0, -30)
         });
         infowindow.open(map);
+
+        //remove loading message
+        //based on https://stackoverflow.com/questions/20307549/display-loading-message-on-google-maps
+        google.maps.event.addListener(map, 'tilesloaded', function(){
+          var msg = document.getElementById('loadmsg')
+          msg.parentNode.removeChild(msg);
+        });
       });
     }
   </script>
