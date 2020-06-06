@@ -24,7 +24,7 @@ class DBManager:
     def create_protest_table(self):
         create_protests = """CREATE TABLE IF NOT EXISTS protests (
                                 id integer PRIMARY KEY,
-                                name text NOT NULL,
+                                title text NOT NULL,
                                 time_info text NOT NULL,
                                 latitude text NOT NULL,
                                 longitude text NOT NULL,
@@ -89,7 +89,7 @@ class DBManager:
 
         protest takes (name, time_info, location, latitude, longitude, url, notes)
         """
-        sql = '''INSERT INTO protests(name, time_info, location, latitude, longitude, url, notes)
+        sql = '''INSERT INTO protests(title, time_info, location, latitude, longitude, url, notes)
                 VALUES(?, ?, ?, ?, ?, ?, ?)'''
         try:
             cur = self.conn.cursor()
