@@ -1,7 +1,7 @@
 """
 Changelog/ notes log
 
-Jackson, June 5, 2020
+Jackson, June 6, 2020
 - I didn't test this at all
 - Used foster's presumably working code
 - PLEASE TEST BEFORE MERGING TO MASTER

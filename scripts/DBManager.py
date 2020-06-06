@@ -128,6 +128,10 @@ class DBManager:
 
         return cursor.fetchall()
 
+    """
+        JSON Handling
+    """
+
     def generate_json(self):
         """
             Generates json for all of the rows in the db, returns json string
@@ -183,6 +187,10 @@ class DBManager:
 
             file.truncate()
         print(f'Saved GeoJson data to {filepath}')
+
+    """
+        Location managing and updating
+    """
 
     def get_next_empty_loc(self):
         """ 

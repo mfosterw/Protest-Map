@@ -11,7 +11,6 @@ from DBManager import *
 from bs4 import BeautifulSoup
 import requests
 
-
 class ProtestChicagoParser:
 	def __init__(self, db_file="temp.db", db_manager=None):
 		self.url = "https://www.protestchicago.com/"
