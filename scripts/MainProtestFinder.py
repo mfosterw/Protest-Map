@@ -7,7 +7,7 @@ Jackson, June 5, 2020
 
 """
 
-from DBManager import * 
+from DBManager import *
 from ProtestChicagoParser import *
 
 class MainProtestFinder:
@@ -15,9 +15,9 @@ class MainProtestFinder:
 		self.db = DBManager(db_name)
 		self.parsers = [ProtestChicagoParser(db_manager=self.db)]
 
-	def do_parses(self):
+	def do_parses(self, geocode=False):
 		for parser in self.parsers:
-			parser.parse()
+			parser.parse(geocode)
 
 	def export_json(self, path, geopath='files/geoprotest.json'):
 		self.db.save_json(path)
@@ -25,5 +25,5 @@ class MainProtestFinder:
 
 if __name__ == "__main__":
 	mpf = MainProtestFinder("files/protests.db")
-	mpf.do_parses()
+	mpf.do_parses(True)
 	mpf.export_json("files/protestjson.json")
