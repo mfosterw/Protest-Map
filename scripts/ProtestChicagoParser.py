@@ -10,9 +10,6 @@ however, as of June 4 2020 file is working
 from DBManager import *
 from bs4 import BeautifulSoup
 import requests
-import os
-
-import googlemaps
 
 class ProtestChicagoParser:
 	def __init__(self, db_file="temp.db", db_manager=None):
@@ -24,10 +21,8 @@ class ProtestChicagoParser:
 		else:
 			self.db_manager = db_manager
 
-		self.gmaps = googlemaps.Client(key=os.environ.get('API_KEY'))
-
 	#ALL PARSERS SHOULD HAVE A .parse() that does the parsing, and saves to the DB. Can or cannot have lat long implementation
-	def parse(self, geocode=False):
+	def parse(self):
 		# parse does the stiring of the beautiful soup to find the needed info
 		# this is probably going to break near instantly, so beware!
 
@@ -57,7 +52,7 @@ class ProtestChicagoParser:
 
 					time_info = article.find('h2').get_text()
 
-					location = article.find('h3').get_text()
+					location = article.find('h3').get_text(separator="\n")
 					location = location.split("\n")
 					location = location[0]
 
@@ -70,16 +65,7 @@ class ProtestChicagoParser:
 					if not self.db_manager.check_val_in(str(found_url), "url"): # If the value isn't in the field already
 						added_count += 1
 
-						coords = dict()
-						if geocode and location:
-							code_res = self.gmaps.geocode(location)
-							print('Location results:', len(code_res))
-							coords = code_res[0]['geometry']['location']
-						else:
-							coords['lat'] = 0.0
-							coords['lng'] = 0.0
-
-						protest = (title, time_info, location, coords['lat'], coords['lng'], found_url, notes)
+						protest = (title, time_info, location, 0.0, 0.0, found_url, notes)
 						self.db_manager.create_protest(protest)
 					else:
 						continue

@@ -6,6 +6,11 @@ Jackson, June 5, 2020
  - Please follow the conventions, it'll make stuff easier in the future!
  - Recommend to only use one instance of DBManager, and to pass it by reference to the various parsers.
  - See 'ProtestChicagoParser' for how to effectively do so
+
+ Jackson, June 6, 2020
+ - Added functions and comments for easilly retrieving rows that need location data
+ - Added functions and comments for easilly updating rows to include location data
+ - 
 """
 
 import sqlite3
@@ -56,8 +61,6 @@ class DBManager:
         self.create_protest_table()
         self.close_connection()
 
-
-
     def create_connection(self):
         """
         Create a new connectoion to the stored database
@@ -100,14 +103,14 @@ class DBManager:
             print("ERROR IN CREATE PROTEST", protest)
             return None
 
-    def check_val_in(self, value, collumn):
+    def check_val_in(self, value, column):
         """
-            Checks if value is in collumn collumn of table protests
+            Checks if value is in the given column of table protests
 
             Returns TRUE if it is; False if it is now
         """
 
-        sql = f'''SELECT * FROM protests WHERE {collumn} = "{value}" '''
+        sql = f'''SELECT * FROM protests WHERE {column} = "{value}" '''
 
         cur = self.conn.cursor()
         cur.execute(sql)
@@ -125,7 +128,9 @@ class DBManager:
 
         return cursor.fetchall()
 
-
+    """
+        JSON Handling
+    """
 
     def generate_json(self):
         """
@@ -182,3 +187,48 @@ class DBManager:
 
             file.truncate()
         print(f'Saved GeoJson data to {filepath}')
+
+    """
+        Location managing and updating
+    """
+
+    def get_next_empty_loc(self):
+        """ 
+            Returns none if none remaining
+
+            Returns (id, location) otherwise
+        """
+        flag = 0
+        if self.conn is None:
+            flag = 1
+            self.create_connection()
+
+        cursor = self.conn.cursor()
+        cursor.execute("""SELECT id, location FROM protests WHERE Location IS NOT "" AND Latitude IS 0.0 AND longitude IS 0.0;""")
+
+        results = cursor.fetchall()
+
+        if flag:
+            self.close_connection()
+
+        if len(results) == 0:
+            return None
+        return results[0]
+
+    def update_location(self, id_, latitude, longitude):
+        """ Updates row id of protests, adding latitude and longitude
+            Meant to be used in conjunction with get_next_empty_loc to fill in all needed lat long data
+        """
+
+        flag = 0
+        if self.conn is None:
+            flag = 1
+            self.create_connection()
+        sql = f"""UPDATE protests SET latitude = {latitude}, longitude = {longitude} WHERE id={id_}"""
+
+        cursor = self.conn.cursor()
+        cursor.execute(sql)
+
+        if flag:
+            self.close_connection()
+
