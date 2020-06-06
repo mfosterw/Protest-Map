@@ -23,7 +23,7 @@
 <body>
   <div id="map">
     <div id="loadmsg">
-      The map is loading. If this takes too long, I'm sorry.
+      The map is loading. If this takes too long, I'm sorry. This could also be an error, in which case you should email protestmapchicago@gmail.com to tell me.
     </div>
   </div>
   <script>
@@ -72,7 +72,7 @@
           };
           var marker = new google.maps.Marker({
             position: pos,
-            icon: {path: path: google.maps.SymbolPath.CIRCLE},
+            icon: {path: google.maps.SymbolPath.CIRCLE},
             map: map
           });
           map.setCenter(pos);
