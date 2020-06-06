@@ -103,14 +103,14 @@ class DBManager:
             print("ERROR IN CREATE PROTEST", protest)
             return None
 
-    def check_val_in(self, value, collumn):
+    def check_val_in(self, value, column):
         """
-            Checks if value is in collumn collumn of table protests
+            Checks if value is in the given column of table protests
 
             Returns TRUE if it is; False if it is now
         """
 
-        sql = f'''SELECT * FROM protests WHERE {collumn} = "{value}" '''
+        sql = f'''SELECT * FROM protests WHERE {column} = "{value}" '''
 
         cur = self.conn.cursor()
         cur.execute(sql)
