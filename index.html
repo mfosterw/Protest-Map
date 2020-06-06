@@ -77,19 +77,22 @@
         var marker = new google.maps.Marker({
           position: pos,
           icon: {
-            path: google.maps.SymbolPath.CIRCLE
+            path: google.maps.SymbolPath.CIRCLE,
+            scale: 8
           },
           map: map
         });
         map.setCenter(pos);
-        map.setZoom(9);
+        map.setZoom(10);
       });
 
       //remove loading message
       //based on https://stackoverflow.com/questions/20307549/display-loading-message-on-google-maps
       google.maps.event.addListener(map, 'tilesloaded', function() {
-        var msg = document.getElementById('loadmsg')
-        msg.parentNode.removeChild(msg);
+        var msg = document.getElementById('loadmsg');
+        if (msg) {
+          msg.parentNode.removeChild(msg);
+        }
       });
     }
   </script>
