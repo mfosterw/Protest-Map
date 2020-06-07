@@ -27,7 +27,7 @@ class ProtestChicagoParser:
 				'May':5, 'June':6, 'July':7, 'August':8, 'September':9,
 				'October':10, 'November':11, 'December':12}
 		numbers = "1234567890"
-		# several time formats
+		# time formats
 		# June 7, 2020 - 4:30 PM – 5:30 PM
 		# June 7, 2020 - 10 AM
 		# Month, day, year 'character' time
@@ -74,6 +74,7 @@ class ProtestChicagoParser:
 
 		seconds_from_epoch = (new_time-epoch).total_seconds()
 		return seconds_from_epoch
+
 
 	#ALL PARSERS SHOULD HAVE A .parse() that does the parsing, and saves to the DB. Can or cannot have lat long implementation
 	def parse(self):
