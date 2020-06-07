@@ -30,7 +30,6 @@ class LocationManager:
 		while next_up is not None:
 			location = next_up[1]
 			if location:
-				raise SystemExit('No spending money')
 				code_res = self.gmaps.geocode(location)
 				print('Location results:', len(code_res))
 				coords = code_res[0]['geometry']['location']

@@ -10,7 +10,7 @@ Jackson, June 5, 2020
  Jackson, June 6, 2020
  - Added functions and comments for easilly retrieving rows that need location data
  - Added functions and comments for easilly updating rows to include location data
- 
+
  Jackson, June 7, 2020
  - Added time field
 """
@@ -151,8 +151,7 @@ class DBManager:
         if get_old_data:
             cursor.execute('SELECT * FROM protests')
         else:
-            epoch_time = int(time.time)
-            cursor.execute(f'SELECT * FROM protests WHERE epoch_time > {epoch_time}')
+            cursor.execute(f'SELECT * FROM protests WHERE epoch_time > {time.time()}')
 
         results = cursor.fetchall()
 
