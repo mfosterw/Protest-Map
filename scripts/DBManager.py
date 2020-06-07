@@ -10,7 +10,9 @@ Jackson, June 5, 2020
  Jackson, June 6, 2020
  - Added functions and comments for easilly retrieving rows that need location data
  - Added functions and comments for easilly updating rows to include location data
- -
+ 
+ Jackson, June 7, 2020
+ - Added time field
 """
 
 import sqlite3
@@ -35,7 +37,8 @@ class DBManager:
                                 longitude text NOT NULL,
                                 location text NOT NULL,
                                 url text NOT NULL,
-                                notes text NOT NULL
+                                notes text NOT NULL,
+                                epoch_time integer
                              );
                           """
         """ create a table from the create_table_sql statement
@@ -90,10 +93,10 @@ class DBManager:
         :param protest:
         :return: project id
 
-        protest takes (name, time_info, location, latitude, longitude, url, notes)
+        protest takes (name, time_info, location, latitude, longitude, url, notes, epoch_time)
         """
-        sql = '''INSERT INTO protests(title, time_info, location, latitude, longitude, url, notes)
-                VALUES(?, ?, ?, ?, ?, ?, ?)'''
+        sql = '''INSERT INTO protests(title, time_info, location, latitude, longitude, url, notes, epoch_time)
+                VALUES(?, ?, ?, ?, ?, ?, ?, ?)'''
         try:
             cur = self.conn.cursor()
             cur.execute(sql, protest)
