@@ -71,9 +71,9 @@ class ProtestChicagoParser:
 
 		epoch = datetime.datetime(1970,1,1)
 		new_time = datetime.datetime(year,month, day, hour=hour, minute=minute)
-
 		seconds_from_epoch = (new_time-epoch).total_seconds()
-		return seconds_from_epoch
+
+		return (seconds_from_epoch, new_time.strftime('%A, %B %d %Y at %I:%M %p'))
 
 
 	#ALL PARSERS SHOULD HAVE A .parse() that does the parsing, and saves to the DB. Can or cannot have lat long implementation
@@ -117,7 +117,7 @@ class ProtestChicagoParser:
 					# notes are probably in the p-tag
 					notes = article.find('p').get_text()
 
-					time_seconds = self.process_time(time_info)
+					(time_seconds, time_info) = self.process_time(time_info)
 
 					if not self.db_manager.check_val_in(str(found_url), "url"): # If the value isn't in the field already
 						added_count += 1

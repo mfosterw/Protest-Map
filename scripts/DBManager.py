@@ -18,6 +18,7 @@ Jackson, June 5, 2020
 import sqlite3
 from sqlite3 import Error
 import json
+import time
 
 def dict_factory(cursor, row):
     # http://www.cdotson.com/2014/06/generating-json-documents-from-sqlite-databases-in-python/
@@ -135,7 +136,7 @@ class DBManager:
         JSON Handling
     """
 
-    def generate_json(self):
+    def generate_json(self, get_old_data=True):
         """
             Generates json for all of the rows in the db, returns json string
         """
@@ -146,7 +147,12 @@ class DBManager:
 
         self.conn.row_factory = dict_factory
         cursor = self.conn.cursor()
-        cursor.execute('SELECT * FROM protests')
+
+        if get_old_data:
+            cursor.execute('SELECT * FROM protests')
+        else:
+            epoch_time = int(time.time)
+            cursor.execute(f'SELECT * FROM protests WHERE epoch_time > {epoch_time}')
 
         results = cursor.fetchall()
 
@@ -155,23 +161,23 @@ class DBManager:
 
         return results
 
-    def save_json(self, json_path):
+    def save_json(self, json_path, get_old_data=True):
         """
             Saves data from Database into structured JSON file.
             Exxports to path json_path
         """
         with open(json_path, 'w+') as file:
-            json_data = self.generate_json()
+            json_data = self.generate_json(get_old_data=get_old_data)
             file.seek(0)
             file.write(json.dumps(json_data))
 
             file.truncate()
         print(f"Successfully saved JSON file to {json_path}")
 
-    def save_geojson(self, filepath):
+    def save_geojson(self, filepath, get_old_data=True):
         """Saves data in GeoJson format"""
         with open(filepath, 'w+') as file:
-            raw_json = self.generate_json()
+            raw_json = self.generate_json(get_old_data=get_old_data)
             geojson = {'type': 'FeatureCollection', 'features': []}
             for protest in raw_json:
                 feature = {'type': 'Feature',

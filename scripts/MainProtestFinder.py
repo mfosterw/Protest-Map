@@ -24,9 +24,9 @@ class MainProtestFinder:
 		for parser in self.parsers:
 			parser.parse()
 
-	def export_json(self, path, geopath='files/geoprotest.json'):
-		self.db.save_json(path)
-		self.db.save_geojson(geopath)
+	def export_json(self, path, geopath='files/geoprotest.json', save_old=False):
+		self.db.save_json(path, save_old)
+		self.db.save_geojson(geopath, save_old)
 
 	def get_dbm(self):
 		return self.db
@@ -39,4 +39,4 @@ if __name__ == "__main__":
 
 	locM.add_location_data(mpf.get_dbm())
 
-	mpf.export_json("files/protestjson.json", "files/geoprotest.json")
+	mpf.export_json("files/protestjson.json", "files/geoprotest.json", False)
