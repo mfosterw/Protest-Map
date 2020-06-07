@@ -10,6 +10,7 @@ however, as of June 4 2020 file is working
 from DBManager import *
 from bs4 import BeautifulSoup
 import requests
+import datetime
 
 class ProtestChicagoParser:
 	def __init__(self, db_file="temp.db", db_manager=None):
@@ -20,6 +21,60 @@ class ProtestChicagoParser:
 			self.db_manager = DBManager(self.db_file)
 		else:
 			self.db_manager = db_manager
+
+	def process_time(self, time_str):
+		months = {'January':1, 'February':2, 'March':3, 'April':4,
+				'May':5, 'June':6, 'July':7, 'August':8, 'September':9,
+				'October':10, 'November':11, 'December':12}
+		numbers = "1234567890"
+		# time formats
+		# June 7, 2020 - 4:30 PM – 5:30 PM
+		# June 7, 2020 - 10 AM
+		# Month, day, year 'character' time
+		ts = time_str.replace(",", "")
+		ts = ts.split(" ")
+		
+		# first parse the month
+		month = int(months[ts[0]])
+		day = int(ts[1])
+		year = int(ts[2])
+
+		rest = "".join(ts[4:])
+
+		h_flag, m_flag = True, False
+		hour, minute = "0", "0"
+		day_part = ""
+
+		for char in rest:
+			if char in numbers:
+				if h_flag:
+					hour += char
+				elif m_flag:
+					minute += char
+				continue
+			elif char == ":":
+				if h_flag:
+					h_flag, m_flag = False, True
+			elif char == "A":
+				day_part = "AM"
+				break
+			elif char == "P":
+				day_part = "PM"
+				break
+			else:
+				print("Wack time!", char)
+		hour, minute = int(hour), int(minute)
+		if day_part == "PM" and hour < 12:
+			hour += 12
+					
+		# print(ts, f"{month} {day}, {year}, h={hour} m={minute} ")
+
+		epoch = datetime.datetime(1970,1,1)
+		new_time = datetime.datetime(year,month, day, hour=hour, minute=minute)
+		seconds_from_epoch = (new_time-epoch).total_seconds()
+
+		return (seconds_from_epoch, new_time.strftime('%A, %B %d %Y at %I:%M %p'))
+
 
 	#ALL PARSERS SHOULD HAVE A .parse() that does the parsing, and saves to the DB. Can or cannot have lat long implementation
 	def parse(self):
@@ -62,10 +117,12 @@ class ProtestChicagoParser:
 					# notes are probably in the p-tag
 					notes = article.find('p').get_text()
 
+					(time_seconds, time_info) = self.process_time(time_info)
+
 					if not self.db_manager.check_val_in(str(found_url), "url"): # If the value isn't in the field already
 						added_count += 1
 
-						protest = (title, time_info, location, 0.0, 0.0, found_url, notes)
+						protest = (title, time_info, location, 0.0, 0.0, found_url, notes, time_seconds)
 						self.db_manager.create_protest(protest)
 					else:
 						continue
