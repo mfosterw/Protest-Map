@@ -175,21 +175,29 @@ class DBManager:
 
     def save_geojson(self, filepath, get_old_data=True):
         """Saves data in GeoJson format"""
-        with open(filepath, 'w+') as file:
-            raw_json = self.generate_json(get_old_data=get_old_data)
-            geojson = {'type': 'FeatureCollection', 'features': []}
-            for protest in raw_json:
-                feature = {'type': 'Feature',
-                           'properties': {k: v for k, v in protest.items()
-                                          },
-                           'geometry':
-                                {'type': 'Point',
-                                'coordinates': [float(protest['longitude']),
-                                                float(protest['latitude'])]
-                                        }
-                           }
-                geojson['features'].append(feature)
+        #These posts were general announcements, not listings of protests
+        #Now (06/09/20) that a virtual protest has been posted, I don't want
+        #it to be covered up by these
+        excluded_titles = ['All Protest Publishing Suspended Until Further ' +
+                           'Notice', 'Black Lives Matter']
 
+        raw_json = self.generate_json(get_old_data=get_old_data)
+        geojson = {'type': 'FeatureCollection', 'features': []}
+        for protest in raw_json:
+            if protest['title'] not in
+            feature = {'type': 'Feature',
+                       'properties': {k: v for k, v in protest.items()},
+                       'geometry':
+                            {
+                            'type': 'Point',
+                            'coordinates': [float(protest['longitude']),
+                                            float(protest['latitude'])]
+                            }
+                       }
+            geojson['features'].append(feature)
+        geojson.reverse()
+        
+        with open(filepath, 'w+') as file:
             file.seek(0)
             file.write(json.dumps(geojson))
 
