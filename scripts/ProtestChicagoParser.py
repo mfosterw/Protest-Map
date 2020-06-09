@@ -33,7 +33,7 @@ class ProtestChicagoParser:
 		# Month, day, year 'character' time
 		ts = time_str.replace(",", "")
 		ts = ts.split(" ")
-		
+
 		# first parse the month
 		month = int(months[ts[0]])
 		day = int(ts[1])
@@ -58,15 +58,18 @@ class ProtestChicagoParser:
 			elif char == "A":
 				day_part = "AM"
 				break
-			elif char == "P":
+			#The people who run protestchicago.com are kinda lazy tbh
+			#Just gonna assume that if they don't specify then it's PM
+			elif char == "P" or char in '-–':
 				day_part = "PM"
 				break
 			else:
 				print("Wack time!", char)
+				print(' '.join(time_string))
 		hour, minute = int(hour), int(minute)
 		if day_part == "PM" and hour < 12:
 			hour += 12
-					
+
 		# print(ts, f"{month} {day}, {year}, h={hour} m={minute} ")
 
 		epoch = datetime.datetime(1970,1,1)

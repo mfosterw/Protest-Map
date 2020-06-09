@@ -30,11 +30,15 @@ class LocationManager:
 		while next_up is not None:
 			location = next_up[1]
 			if location:
+				print('Spending money now')
 				code_res = self.gmaps.geocode(location)
 				print('Location results:', len(code_res))
-				coords = code_res[0]['geometry']['location']
 
-				lat, lon = coords['lat'], coords['lng']
+				if len(code_res) == 0:
+					lat, lon = default
+				else:
+					coords = code_res[0]['geometry']['location']
+					lat, lon = coords['lat'], coords['lng']
 			else:
 				lat, lon = default
 
