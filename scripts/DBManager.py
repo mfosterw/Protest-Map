@@ -74,8 +74,7 @@ class DBManager:
             return
         try:
             self.conn = sqlite3.connect(self.database_file)
-            print("Version =", sqlite3.version)
-            print("Connection Successfully established")
+            print("Database opened")
         except Error as e:
             print("[ZIGGY STARLIGHT]")
             print(e)
@@ -86,7 +85,7 @@ class DBManager:
             self.conn.commit()
             self.conn.close()
             self.conn = None
-        print("Successfully closed database connection")
+        print("Database closed")
 
     def create_protest(self, protest):
         """
@@ -196,7 +195,7 @@ class DBManager:
                        }
             geojson['features'].append(feature)
         geojson.reverse()
-        
+
         with open(filepath, 'w+') as file:
             file.seek(0)
             file.write(json.dumps(geojson))
