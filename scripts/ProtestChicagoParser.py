@@ -55,17 +55,17 @@ class ProtestChicagoParser:
 			elif char == ":":
 				if h_flag:
 					h_flag, m_flag = False, True
-			elif char == "A":
+			elif char.upper() == "A":
 				day_part = "AM"
 				break
 			#The people who run protestchicago.com are kinda lazy tbh
 			#Just gonna assume that if they don't specify then it's PM
-			elif char == "P" or char in '-–':
+			elif char.upper() == "P" or char in '-–':
 				day_part = "PM"
 				break
 			else:
 				print("Wack time!", char)
-				print(' '.join(time_string))
+				print(''.join(time_str))
 		hour, minute = int(hour), int(minute)
 		if day_part == "PM" and hour < 12:
 			hour += 12
