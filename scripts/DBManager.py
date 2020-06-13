@@ -74,8 +74,7 @@ class DBManager:
             return
         try:
             self.conn = sqlite3.connect(self.database_file)
-            print("Version =", sqlite3.version)
-            print("Connection Successfully established")
+            print("Database opened")
         except Error as e:
             print("[ZIGGY STARLIGHT]")
             print(e)
@@ -86,7 +85,7 @@ class DBManager:
             self.conn.commit()
             self.conn.close()
             self.conn = None
-        print("Successfully closed database connection")
+        print("Database closed")
 
     def create_protest(self, protest):
         """
@@ -184,19 +183,19 @@ class DBManager:
         raw_json = self.generate_json(get_old_data=get_old_data)
         geojson = {'type': 'FeatureCollection', 'features': []}
         for protest in raw_json:
-            if protest['title'] not in
-            feature = {'type': 'Feature',
-                       'properties': {k: v for k, v in protest.items()},
-                       'geometry':
-                            {
-                            'type': 'Point',
-                            'coordinates': [float(protest['longitude']),
-                                            float(protest['latitude'])]
-                            }
-                       }
-            geojson['features'].append(feature)
-        geojson.reverse()
-        
+            if protest['title'] not in excluded_titles:
+                feature = {'type': 'Feature',
+                           'properties': {k: v for k, v in protest.items()},
+                           'geometry':
+                                {
+                                'type': 'Point',
+                                'coordinates': [float(protest['longitude']),
+                                                float(protest['latitude'])]
+                                }
+                           }
+                geojson['features'].append(feature)
+        geojson['features'].reverse()
+
         with open(filepath, 'w+') as file:
             file.seek(0)
             file.write(json.dumps(geojson))
