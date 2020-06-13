@@ -110,9 +110,12 @@ class ProtestChicagoParser:
 
 					time_info = article.find('h2').get_text()
 
-					location = article.find('h3').get_text(separator="\n")
-					location = location.split("\n")
-					location = location[0]
+					locstr = article.find('h3').get_text(separator="\n")
+					locations = locstr.split("\n")
+					location = locations[0]
+					if location and 'Chicago'.lower() not in location.lower():
+						location += ', Chicago'
+					print(location)
 
 					# isolate the link from the h1 a tag
 					found_url = title_h1.find(href=True)['href']
